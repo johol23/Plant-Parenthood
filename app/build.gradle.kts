@@ -7,6 +7,9 @@ android {
     namespace = "com.example.plantparenhood"
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+    }
     defaultConfig {
         applicationId = "com.example.plantparenhood"
         minSdk = 31
@@ -36,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.material:material:1.9.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
