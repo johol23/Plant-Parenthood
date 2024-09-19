@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CameraFragment">
+    android:orientation="vertical"
+    android:gravity="center">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Camera Fragment" />
+    <Button
+        android:id="@+id/photo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Photo" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/video_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload From Device" />
+
+</LinearLayout>
