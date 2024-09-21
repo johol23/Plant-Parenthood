@@ -1,10 +1,15 @@
 package com.example.plantparenhood
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,13 +25,12 @@ class GardenFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var imageAdapter: ImageAdapter
+    private lateinit var gardenImageView: ImageView
+    private val viewModel: GardenViewModel by activityViewModels ()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -36,7 +40,28 @@ class GardenFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_garden, container, false)
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        // Initialize the adapter with the list of image URIs
+        imageAdapter = ImageAdapter(viewModel.imageUris)
+        recyclerView.adapter = imageAdapter
+
+        arguments?.getString("imageUri")?.let { imageUriString ->
+            viewModel.imageUris.add(imageUriString)
+            imageAdapter.notifyItemInserted(viewModel.imageUris.size - 1)
+        }
+    }
+
+    private fun displayImages() {
+        if (viewModel.imageUris.isNotEmpty()){
+            val latestImageUri = Uri.parse(viewModel.imageUris.last())
+            gardenImageView.setImageURI(latestImageUri)
+        }
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
