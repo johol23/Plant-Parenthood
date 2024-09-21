@@ -3,6 +3,7 @@ package com.example.plantparenhood
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 //import com.example.plantidentifier.databinding.ActivityMainBinding
 import com.example.plantparenhood.BadgesFragment
 import com.example.plantparenhood.CameraFragment
@@ -28,33 +29,26 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set default fragment - This will be the "Main page" of the app
-        replaceFragment(gardenFragment)
-
         // Set up navigation listener
         binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_garden -> {
-                    replaceFragment(gardenFragment)
+                    navigateToFragment(R.id.navigation_garden)
                     true
                 }
                 R.id.navigation_camera -> {
-                    replaceFragment(cameraFragment)
+                    navigateToFragment(R.id.navigation_camera)
                     true
                 }
                 R.id.navigation_badges -> {
-                    replaceFragment(badgesFragment)
+                    navigateToFragment(R.id.navigation_badges)
                     true
                 }
                 else -> false
             }
         }
     }
-
-    private fun replaceFragment(fragment: Fragment) {
-        // Replace the fragment in the container
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
+    private fun navigateToFragment(fragmentId: Int){
+        findNavController(R.id.nav_host_fragment).navigate(fragmentId)
     }
 }

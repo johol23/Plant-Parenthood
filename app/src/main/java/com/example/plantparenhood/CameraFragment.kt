@@ -13,9 +13,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+
 import java.io.File
+
 
 import java.util.concurrent.Executors
 
@@ -148,10 +155,28 @@ class CameraFragment : Fragment() {
     private fun handleImageCaptureResult(uri: Uri?) {
         uri?.let {
             val fileInfo = createFileInfoFromUri(uri)
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Save to Garden")
+                .setMessage("Would you like to save this image to your garden?")
+                .setPositiveButton("Yes") {_ ,_ ->
+                    saveImageToGarden(fileInfo)
+                }
+                .setNegativeButton("No", null)
+                .show()
             providerFileManager.insertImageToStore(fileInfo)
         } ?: run {
             Log.e("CameraFragment", "Image capture was canceled or failed")
         }
+    }
+
+    private fun saveImageToGarden(fileInfo: FileInfo) {
+        val bundle = Bundle().apply {
+            putString("imageUri", fileInfo.uri.toString()) // Pass image URI as a string
+        }
+
+        // Navigate to GardenFragment
+        findNavController()?.navigate(R.id.navigation_garden, bundle)
     }
 
 
